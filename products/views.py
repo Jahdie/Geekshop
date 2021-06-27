@@ -21,6 +21,7 @@ def index(request):
 
 def products(request):
     context = {
+        'date_time': datetime.datetime.now(),
         'categories': ['Новинки', 'Одежда', 'Обувь', 'Аксессуары', 'Подарки'],
         'title': 'GeekShop - Товары',
         'products': [
