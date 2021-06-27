@@ -2,13 +2,14 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render
-
+import datetime
 
 # Create your views here.
 
 
 def index(request):
     context = {
+        'date_time': datetime.datetime.now(),
         'title': 'GeekShop',
         'username': 'Иван Иванов',
         'is_promotion': 0,
