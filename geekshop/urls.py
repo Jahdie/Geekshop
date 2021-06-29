@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from products.views import index
 
 urlpatterns = [
+    path('', index, name='index'),
     path('admin/', admin.site.urls),
-    path('', include('products.urls')),
+    path('products/', include(('products.urls', 'products'), namespace='products')),
 ]
 
 if settings.DEBUG:
