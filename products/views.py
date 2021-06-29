@@ -22,8 +22,9 @@ def index(request):
 
 
 def products(request):
+    context = {"title": "GeekShop - Товары"}
     path_to_project = os.path.dirname(os.path.realpath(__file__))
     path_to_json = path_to_project + "\\fixtures\\products.json"
     with open(path_to_json, encoding="utf-8") as file:
-        context = json.load(file)
+        context.update(json.load(file))
     return render(request, "products.html", context)
