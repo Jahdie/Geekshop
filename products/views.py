@@ -29,3 +29,6 @@ def products(request):
                "products": model_products_content,
                "categories": model_categories_content}
     return render(request, "products.html", context)
+
+
+

@@ -1,5 +1,8 @@
 from django.db import models
+from django.core.management import call_command
 
+# fixture = 'products.json'
+# call_command('loaddata', fixture, app_label='products')
 
 class ProductCategories(models.Model):
     name = models.CharField(max_length=64, unique=True, verbose_name="Категория")
