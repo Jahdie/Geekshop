@@ -1,9 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
-
-
 class ProductCategories(models.Model):
     name = models.CharField(max_length=64, unique=True, verbose_name="Категория")
     description = models.TextField(blank=True, null=True, verbose_name="Описание")

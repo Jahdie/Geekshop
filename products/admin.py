@@ -3,7 +3,7 @@ from products.models import ProductCategories, Products
 
 
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ("pk", "name", "description", "price", "quantity", "category")
+    list_display = ("pk", "name", "description", "price", "image", "quantity", "category")
 
 
 class ProductCategoriesAdmin(admin.ModelAdmin):
