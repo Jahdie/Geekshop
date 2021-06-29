@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import render
 import datetime
+from products.models import ProductCategories, Products
 import json
 import os
 
@@ -15,16 +16,16 @@ def index(request):
         "date_time": datetime.datetime.now(),
         "title": "GeekShop",
         "username": "Иван Иванов",
-        "is_promotion": 0,
+        "is_promotion": 1,
         "promotion_text": "Бесплатная доставка по всему миру! Аутлет: до -70% Собственный бренд. -20% новым покупателям."
     }
     return render(request, "index.html", context)
 
 
 def products(request):
-    context = {"title": "GeekShop - Товары"}
-    path_to_project = os.path.dirname(os.path.realpath(__file__))
-    path_to_json = path_to_project + "\\fixtures\\products.json"
-    with open(path_to_json, encoding="utf-8") as file:
-        context.update(json.load(file))
+    model_categories_content = ProductCategories.objects.all()
+    model_products_content = Products.objects.all()
+    context = {"title": "GeekShop - Товары",
+               "products": model_products_content,
+               "categories": model_categories_content}
     return render(request, "products.html", context)
