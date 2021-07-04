@@ -1,14 +1,8 @@
 from django.shortcuts import render
-
-# Create your views here.
-from django.shortcuts import render
 import datetime
 from products.models import ProductCategories, Products
-import json
-import os
-
-
-# Create your views here.
+# import json
+# import os
 
 
 def index(request):
