@@ -53,20 +53,10 @@ def profile(request):
     else:
         form = UserProfileForm(instance=user)
 
-    total_price = 0
-    total_quantity = 0
-    prices_and_quantity = Baskets.objects.filter(user=user).values('product__price', 'quantity')
-    for item in prices_and_quantity:
-        values = list(item.values())
-        total_price += (values[0] * values[1])
-        total_quantity += values[1]
-        
     context = {
         'title': 'GeekShop - личный кабинет',
         'form': form,
         'baskets': Baskets.objects.filter(user=user),
-        'total_price': total_price,
-        'total_quantity': total_quantity,
     }
     return render(request, 'profile.html', context)
 
