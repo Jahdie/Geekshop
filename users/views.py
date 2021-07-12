@@ -1,13 +1,14 @@
 from django.shortcuts import render, HttpResponseRedirect
 from users.forms import UserLoginForm, UserRegisterForm, UserProfileForm
+from django.contrib.auth.decorators import login_required
 from django.contrib import auth, messages
 from django.urls import reverse
 from basket.models import Baskets
-from django.db.models import Sum
 
 
 def login(request):
     login_form = UserLoginForm(data=request.POST)
+    _next = request.GET['next'] if 'next' in request.GET.keys() else ''
     if request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']
         password = request.POST['password']
@@ -15,11 +16,16 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
             auth.login(request, user)
-            return HttpResponseRedirect(reverse('index'))
+            if 'next' in request.POST.keys():
+                return HttpResponseRedirect(request.POST['next'])
+            else:
+                return HttpResponseRedirect(reverse('index'))
+
     else:
         login_form = UserLoginForm()
     context = {'title': 'Geekshop - вход',
                'form': login_form,
+               'next': _next
                }
 
     return render(request, 'login.html', context)
@@ -43,6 +49,7 @@ def registration(request):
     return render(request, 'registration.html', context)
 
 
+@login_required()
 def profile(request):
     user = request.user
     if request.method == 'POST':
@@ -53,20 +60,10 @@ def profile(request):
     else:
         form = UserProfileForm(instance=user)
 
-    total_price = 0
-    total_quantity = 0
-    prices_and_quantity = Baskets.objects.filter(user=user).values('product__price', 'quantity')
-    for item in prices_and_quantity:
-        values = list(item.values())
-        total_price += (values[0] * values[1])
-        total_quantity += values[1]
-        
     context = {
         'title': 'GeekShop - личный кабинет',
         'form': form,
         'baskets': Baskets.objects.filter(user=user),
-        'total_price': total_price,
-        'total_quantity': total_quantity,
     }
     return render(request, 'profile.html', context)
 
