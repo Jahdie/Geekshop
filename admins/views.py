@@ -3,18 +3,22 @@ from users.models import Users
 from products.models import Products, ProductCategories
 from admins.forms import *
 from django.urls import reverse
+from django.contrib.auth.decorators import user_passes_test
 
 
+@user_passes_test(lambda u: u.is_staff)
 def index(request):
     context = {'title': 'Админ - панель'}
     return render(request, 'admins/index.html', context)
 
 
+@user_passes_test(lambda u: u.is_staff)
 def admin_users_read(request):
     context = {'title': 'Админ - панель - Пользователи', 'users': Users.objects.all()}
     return render(request, 'admins/admin-users-read.html', context)
 
 
+@user_passes_test(lambda u: u.is_staff)
 def admin_users_create(request):
     if request.method == 'POST':
         register_form = UserAdminRegistrationForm(data=request.POST, files=request.FILES)
@@ -31,6 +35,7 @@ def admin_users_create(request):
     return render(request, 'admins/admin-users-create.html', context)
 
 
+@user_passes_test(lambda u: u.is_staff)
 def admin_users_update(request, pk):
     selected_user = Users.objects.get(id=pk)
     if request.method == 'POST':
@@ -49,17 +54,20 @@ def admin_users_update(request, pk):
     return render(request, 'admins/admin-users-update-delete.html', context)
 
 
+@user_passes_test(lambda u: u.is_staff)
 def admin_users_delete(request, pk):
     user = Users.objects.get(id=pk)
     user.delete()
     return HttpResponseRedirect(reverse('admins:admins_users_read'))
 
 
+@user_passes_test(lambda u: u.is_staff)
 def admin_products_read(request):
     context = {'title': 'Админ - панель - Продукты', 'products': Products.objects.all()}
     return render(request, 'products/admin-products-read.html', context)
 
 
+@user_passes_test(lambda u: u.is_staff)
 def admin_products_update(request, pk):
     selected_product = Products.objects.get(id=pk)
     if request.method == 'POST':
@@ -77,6 +85,7 @@ def admin_products_update(request, pk):
     return render(request, 'products/admin-products-update-delete.html', context)
 
 
+@user_passes_test(lambda u: u.is_staff)
 def admin_products_create(request):
     if request.method == 'POST':
         form = ProductAdminCreateForm(data=request.POST, files=request.FILES)
@@ -93,17 +102,20 @@ def admin_products_create(request):
     return render(request, 'products/admin-products-create.html', context)
 
 
+@user_passes_test(lambda u: u.is_staff)
 def admin_products_delete(request, pk):
     product = Products.objects.get(id=pk)
     product.delete()
     return HttpResponseRedirect(reverse('admins:admins_products_read'))
 
 
+@user_passes_test(lambda u: u.is_staff)
 def admin_categories_read(request):
     context = {'title': 'Админ - панель - Категории', 'categories': ProductCategories.objects.all()}
     return render(request, 'categories/admin-categories-read.html', context)
 
 
+@user_passes_test(lambda u: u.is_staff)
 def admin_categories_update(request, pk):
     selected_category = ProductCategories.objects.get(id=pk)
     if request.method == 'POST':
