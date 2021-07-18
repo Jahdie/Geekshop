@@ -57,7 +57,8 @@ def admin_users_update(request, pk):
 @user_passes_test(lambda u: u.is_staff)
 def admin_users_delete(request, pk):
     user = Users.objects.get(id=pk)
-    user.delete()
+    user.is_active = False
+    user.save()
     return HttpResponseRedirect(reverse('admins:admins_users_read'))
 
 
@@ -105,7 +106,8 @@ def admin_products_create(request):
 @user_passes_test(lambda u: u.is_staff)
 def admin_products_delete(request, pk):
     product = Products.objects.get(id=pk)
-    product.delete()
+    product.is_active = False
+    product.save()
     return HttpResponseRedirect(reverse('admins:admins_products_read'))
 
 
@@ -150,5 +152,6 @@ def admin_categories_create(request):
 
 def admin_categories_delete(request, pk):
     category = ProductCategories.objects.get(id=pk)
-    category.delete()
+    category.is_active = False
+    category.save()
     return HttpResponseRedirect(reverse('admins:admins_categories_read'))
