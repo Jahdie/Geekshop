@@ -13,10 +13,13 @@ def index(request):
     return render(request, "index.html", context)
 
 
-def products(request):
-    context = {"title": "GeekShop - Товары",
-               "products": Products.objects.all(),
-               "categories": ProductCategories.objects.all()}
+def products(request, category_id=None):
+    context = {'title': 'GeekShop - Товары', 'categories': ProductCategories.objects.all()}
+    if category_id:
+        _products = Products.objects.filter(category_id=category_id)
+    else:
+        _products = Products.objects.all()
+    context['products'] = _products
     return render(request, "products.html", context)
 
 
