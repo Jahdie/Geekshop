@@ -33,7 +33,7 @@ def login(request):
 
 def registration(request):
     if request.method == 'POST':
-        register_form = UserRegisterForm(request.POST, request.FILES)
+        register_form = UserRegisterForm(data=request.POST, files=request.FILES)
 
         if register_form.is_valid():
             register_form.save()
